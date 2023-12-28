@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from .models import Item
 import stripe
 
-stripe.api_key = 'pk_test_51OSFHsLoQoyi9wp2qmJ5Pip54W8HNcDLBWcj4DEp824ZIt0zoF33axcrvVlP7o2kdbexbQzEfCGnn1TFY27mf8or00akYSyoV3'
+stripe.api_key = 'sk_test_51OSFHsLoQoyi9wp2qWs9TDvwJRtxtgRHXQpakODubsbPU928OUrYzMqIWQMPXhkzCCpQKE2RP832R2ayqTgmmUKQ00sSMSkv4T'
 
 def buy_item(request, id):
     item = get_object_or_404(Item, pk=id)
@@ -27,4 +27,4 @@ def buy_item(request, id):
 
 def item_detail(request, id):
     item = get_object_or_404(Item, pk=id)
-    return render(request, 'item_detail.html', {'item': item})
+    return render(request, 'payments/item_detail.html', {'item': item})
