@@ -1,5 +1,4 @@
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Item(models.Model):
     """ Товар в магазине """
@@ -46,32 +45,3 @@ class Order(models.Model):
             return total
         else:
             return 0
-
-
-class Discount(models.Model):
-    """ Скидка в % """
-    class Meta:
-        verbose_name = "Скидка на заказ"
-        verbose_name_plural = "Скидки на заказ"
-
-    order = models.ForeignKey(Order, verbose_name="Заказ", on_delete=models.CASCADE)
-    discount_amount = models.DecimalField(
-        verbose_name="Скидка(%)", 
-        max_digits=5, 
-        decimal_places=2, 
-        validators=[MinValueValidator(0.01), MaxValueValidator(100.00)]
-    )
-
-class Tax(models.Model):
-    """ Налог в % """
-    class Meta:
-        verbose_name = "Налог на заказ"
-        verbose_name_plural = "Налоги на заказ"
-
-    order = models.ForeignKey(Order, verbose_name="Заказ", on_delete=models.CASCADE)
-    tax_amount = models.DecimalField(
-        verbose_name="Налог(%)",
-        max_digits=5, 
-        decimal_places=2, 
-        validators=[MinValueValidator(0.01), MaxValueValidator(100.00)]
-    )

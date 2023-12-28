@@ -17,14 +17,13 @@ class StripeSessionCreator:
                 mode='payment',
                 success_url=success_url,
                 cancel_url=cancel_url,
-                currency=currency,  # Добавляем валюту
+                currency=currency, 
             )
             return session
 
     def _generate_line_items(self):
         line_items = []
         for item in self.order.items.all():
-            # Используем related_name для доступа к скидкам и налогам
             discount_total = sum((discount.discount_amount / 100) * item.price for discount in self.order.discounts.all())
             tax_total = sum((tax.tax_amount / 100) * item.price for tax in self.order.taxes.all())
             adjusted_price = item.price - discount_total + tax_total
