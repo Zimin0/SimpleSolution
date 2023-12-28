@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['151.248.116.252', ]
+ALLOWED_HOSTS = ['151.248.116.252',]
 
 STATIC_URL = 'static/'
 STATIC_ROOT = 'static/'
@@ -81,8 +81,12 @@ WSGI_APPLICATION = 'simplesolution.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB'),  
+        'USER': os.environ.get('POSTGRES_USER'),      
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'), 
+        'HOST': 'postgres',  
+        'PORT': '5432',
     }
 }
 
