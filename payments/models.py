@@ -23,7 +23,7 @@ class Order(models.Model):
         verbose_name = "Заказ на покупку"
         verbose_name_plural = "Заказы на покупку"
 
-    items = models.ManyToManyField(Item, verbose_name="Товары в заказе")
+    items = models.ManyToManyField(Item, related_name="orders", verbose_name="Товары в заказе")
     
     def __str__(self):
         return f"{self.id}"
@@ -53,7 +53,7 @@ class Discount(models.Model):
     def __str__(self):
         return f"{self.id}"
 
-    order = models.ForeignKey(Order, verbose_name="Заказ", on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, related_name="discounts", verbose_name="Заказ", on_delete=models.CASCADE)
     discount_amount = models.DecimalField(verbose_name="Скидка(%)", max_digits=5, decimal_places=2) 
 
 class Tax(models.Model):
@@ -64,5 +64,5 @@ class Tax(models.Model):
     def __str__(self):
         return f"{self.id}"
 
-    order = models.ForeignKey(Order, verbose_name="Заказ", on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, verbose_name="Заказ", related_name="taxes", on_delete=models.CASCADE)
     tax_amount = models.DecimalField(verbose_name="Скидка(%)", max_digits=10, decimal_places=2)

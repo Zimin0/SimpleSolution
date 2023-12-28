@@ -24,9 +24,9 @@ class StripeSessionCreator:
     def _generate_line_items(self):
         line_items = []
         for item in self.order.items.all():
-            # Применяем скидку и налог к каждому товару
-            discount_total = sum((d.discount_amount / 100) * item.price for d in self.order.discount_set.all())
-            tax_total = sum((t.tax_amount / 100) * item.price for t in self.order.tax_set.all())
+            # Используем related_name для доступа к скидкам и налогам
+            discount_total = sum((discount.discount_amount / 100) * item.price for discount in self.order.discounts.all())
+            tax_total = sum((tax.tax_amount / 100) * item.price for tax in self.order.taxes.all())
             adjusted_price = item.price - discount_total + tax_total
 
             line_item = {
