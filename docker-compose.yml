@@ -12,11 +12,11 @@ services:
 
   web:
     build: .
-    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn simplesolution.wsgi:application --bind 0.0.0.0:8888
     volumes:
-      - ./doctor-site:/app
+      - ./simplesolution_project:/app
     ports:
-      - "8000:8000"
+      - "8888:8888"
     depends_on:
       - db
     environment:
@@ -27,7 +27,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./doctor-site/static:/static
+      - ./simplesolution_project/static:/static
       - ./docker/nginx:/etc/nginx/conf.d
     depends_on:
       - web
