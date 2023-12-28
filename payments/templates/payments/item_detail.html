@@ -10,6 +10,9 @@
     <p>Price: {{ item.price }} {{ item.currency }}</p>
     <button id="buy-button" data-item-id="{{ item.id }}">Buy Now</button>
 
+    <div id="card-element" style="display:none;">
+    </div>
+
     <script src="https://js.stripe.com/v3/"></script>
     <script src="{% static 'payments/buy.js' %}"></script>
 </body>

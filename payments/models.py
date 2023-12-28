@@ -39,8 +39,8 @@ class Order(models.Model):
             total = 0
             for item in self.items.all():
                 item_price = item.price
-                discount_total = sum((d.discount_amount / 100) * item_price for d in self.discount_set.all())
-                tax_total = sum((t.tax_amount / 100) * item_price for t in self.tax_set.all())
+                discount_total = sum((d.discount_amount / 100) * item_price for d in self.discounts.all())
+                tax_total = sum((t.tax_amount / 100) * item_price for t in self.taxes.all())
                 total += item_price - discount_total + tax_total
             return total
         else:

@@ -1,42 +1,27 @@
 import stripe
 from payments.models import Order
 
-class StripeSessionCreator:
+class StripePaymentIntentCreator:
     def __init__(self, order: Order):
         self.order = order
         stripe.api_key = 'sk_test_51OSFHsLoQoyi9wp2qWs9TDvwJRtxtgRHXQpakODubsbPU928OUrYzMqIWQMPXhkzCCpQKE2RP832R2ayqTgmmUKQ00sSMSkv4T'
 
-    def create_session(self, success_url, cancel_url):
-            line_items = self._generate_line_items()
-            # Используем валюту первого товара в заказе
-            currency = self.order.items.first().currency
+    def create_payment_intent(self):
+        amount = self._calculate_order_total()
+        currency = self.order.items.first().currency
 
-            session = stripe.checkout.Session.create(
-                payment_method_types=['card'],
-                line_items=line_items,
-                mode='payment',
-                success_url=success_url,
-                cancel_url=cancel_url,
-                currency=currency, 
-            )
-            return session
+        payment_intent = stripe.PaymentIntent.create(
+            amount=amount,
+            currency=currency,
+            payment_method_types=['card'],
+        )
+        return payment_intent
 
-    def _generate_line_items(self):
-        line_items = []
+    def _calculate_order_total(self):
+        total = 0
         for item in self.order.items.all():
-            discount_total = sum((discount.discount_amount / 100) * item.price for discount in self.order.discounts.all())
-            tax_total = sum((tax.tax_amount / 100) * item.price for tax in self.order.taxes.all())
+            discount_total = sum((d.discount_amount / 100) * item.price for d in self.order.discounts.all())
+            tax_total = sum((t.tax_amount / 100) * item.price for t in self.order.taxes.all())
             adjusted_price = item.price - discount_total + tax_total
-
-            line_item = {
-                'price_data': {
-                    'currency': item.currency,
-                    'product_data': {
-                        'name': item.name,
-                    },
-                    'unit_amount': int(adjusted_price * 100),
-                },
-                'quantity': 1,
-            }
-            line_items.append(line_item)
-        return line_items
+            total += adjusted_price
+        return int(total * 100)  # Возвращаем сумму в центах

@@ -3,7 +3,7 @@ from payments.models import Item, Order
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description', 'price', 'currency']
+    list_display = ['id', 'name', 'description', 'price', 'currency']
     search_fields = ['name', 'currency'] 
     list_filter = ['currency'] 
     ordering = ['name']  
