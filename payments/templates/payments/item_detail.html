@@ -1,0 +1,16 @@
+<!-- item_detail.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ item.name }}</title>
+</head>
+<body>
+    <h1>{{ item.name }}</h1>
+    <p>{{ item.description }}</p>
+    <p>Price: {{ item.price }} {{ item.currency }}</p>
+    <button id="buy-button" data-item-id="{{ item.id }}">Buy Now</button>
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="{% static 'payments/buy.js' %}"></script>
+</body>
+</html>
