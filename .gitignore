@@ -1,7 +1,7 @@
 ToDo.txt
 *.log
 venv/
-*.db
+db.sqlite3
 *.pot
 *.pyc
 *cpython*
