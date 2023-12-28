@@ -1,6 +1,8 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Item(models.Model):
+    """ Товар в магазине """
     class Meta:
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
@@ -19,6 +21,7 @@ class Item(models.Model):
         return f"{self.name}"
 
 class Order(models.Model):
+    """ Заказ. Содержит в себе Items """
     class Meta:
         verbose_name = "Заказ на покупку"
         verbose_name_plural = "Заказы на покупку"
@@ -46,23 +49,29 @@ class Order(models.Model):
 
 
 class Discount(models.Model):
+    """ Скидка в % """
     class Meta:
         verbose_name = "Скидка на заказ"
         verbose_name_plural = "Скидки на заказ"
-    
-    def __str__(self):
-        return f"{self.id}"
 
-    order = models.ForeignKey(Order, related_name="discounts", verbose_name="Заказ", on_delete=models.CASCADE)
-    discount_amount = models.DecimalField(verbose_name="Скидка(%)", max_digits=5, decimal_places=2) 
+    order = models.ForeignKey(Order, verbose_name="Заказ", on_delete=models.CASCADE)
+    discount_amount = models.DecimalField(
+        verbose_name="Скидка(%)", 
+        max_digits=5, 
+        decimal_places=2, 
+        validators=[MinValueValidator(0.01), MaxValueValidator(100.00)]
+    )
 
 class Tax(models.Model):
+    """ Налог в % """
     class Meta:
         verbose_name = "Налог на заказ"
         verbose_name_plural = "Налоги на заказ"
-    
-    def __str__(self):
-        return f"{self.id}"
 
-    order = models.ForeignKey(Order, verbose_name="Заказ", related_name="taxes", on_delete=models.CASCADE)
-    tax_amount = models.DecimalField(verbose_name="Скидка(%)", max_digits=10, decimal_places=2)
+    order = models.ForeignKey(Order, verbose_name="Заказ", on_delete=models.CASCADE)
+    tax_amount = models.DecimalField(
+        verbose_name="Налог(%)",
+        max_digits=5, 
+        decimal_places=2, 
+        validators=[MinValueValidator(0.01), MaxValueValidator(100.00)]
+    )
