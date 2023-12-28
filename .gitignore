@@ -1,0 +1,14 @@
+ToDo.txt
+*.log
+venv/
+*.db
+*.pot
+*.pyc
+*cpython*
+__pycache__/
+media
+trash/
+*trash*
+media/
+*.pyc
+delete_migrations.py
