@@ -26,7 +26,7 @@ def item_detail(request, id):
 
 def pay_order(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
-    
+
     # Создание сессии Stripe
     stripe_creator = StripeSessionCreator(order)
     session = stripe_creator.create_session(

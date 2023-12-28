@@ -7,15 +7,19 @@ class StripeSessionCreator:
         stripe.api_key = 'sk_test_51OSFHsLoQoyi9wp2qWs9TDvwJRtxtgRHXQpakODubsbPU928OUrYzMqIWQMPXhkzCCpQKE2RP832R2ayqTgmmUKQ00sSMSkv4T'
 
     def create_session(self, success_url, cancel_url):
-        line_items = self._generate_line_items()
-        session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
-            line_items=line_items,
-            mode='payment',
-            success_url=success_url,
-            cancel_url=cancel_url
-        )
-        return session
+            line_items = self._generate_line_items()
+            # Используем валюту первого товара в заказе
+            currency = self.order.items.first().currency
+
+            session = stripe.checkout.Session.create(
+                payment_method_types=['card'],
+                line_items=line_items,
+                mode='payment',
+                success_url=success_url,
+                cancel_url=cancel_url,
+                currency=currency,  # Добавляем валюту
+            )
+            return session
 
     def _generate_line_items(self):
         line_items = []
