@@ -86,9 +86,9 @@ WSGI_APPLICATION = 'simplesolution.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'simple_db',  
-        'USER': 'simple',      
-        'PASSWORD': '3gGG*2n4',
+        'NAME': os.getenv('POSTGRES_DB'),  
+        'USER': os.getenv('POSTGRES_USER'),      
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'), 
         'HOST': 'db',
         'PORT': '5432',
     }
