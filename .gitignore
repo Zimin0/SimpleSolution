@@ -11,4 +11,5 @@ trash/
 *trash*
 media/
 *.pyc
+*cpython*
 delete_migrations.py
