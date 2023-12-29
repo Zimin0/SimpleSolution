@@ -7,8 +7,8 @@ class Item(models.Model):
         verbose_name_plural = "Товары"
 
     CURRENCY = (
-        ("RUB", "Рубли"),
-        ("EUR", "Евро"),
+        ("RUB", "Рубль"),
+        ("USD", "Доллар"),
     )
 
     name = models.CharField(verbose_name="Название", max_length=200)
@@ -30,18 +30,18 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.id}"
 
-    def save(self, *args, **kwargs):
-        self.total_price = self.calculate_total_price()
-        super(Order, self).save(*args, **kwargs)
+    def display_prices(self):
+        result = {}
+        for item in self.items.all():
+            currency = item.currency
+            if currency not in result:
+                result[currency] = 0
 
-    def calculate_total_price(self):
-        if self.pk:
-            total = 0
-            for item in self.items.all():
-                item_price = item.price
-                discount_total = sum((d.discount_amount / 100) * item_price for d in self.discounts.all())
-                tax_total = sum((t.tax_amount / 100) * item_price for t in self.taxes.all())
-                total += item_price - discount_total + tax_total
-            return total
-        else:
-            return 0
+            discount_total = sum((d.discount_amount / 100) * item.price for d in self.discounts.all())
+            tax_total = sum((t.tax_amount / 100) * item.price for t in self.taxes.all())
+            adjusted_price = item.price - discount_total + tax_total
+            result[currency] += adjusted_price
+
+        # Формируем строку с результатами
+        total_strings = [f"{currency}: {int(amount)}" for currency, amount in result.items()]
+        return ' '.join(total_strings)

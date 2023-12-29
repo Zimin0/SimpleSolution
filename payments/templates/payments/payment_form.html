@@ -8,7 +8,7 @@
 </head>
 <body>
     <h2>Оплата заказа №{{ order.id }}</h2>
-    <p> Итого: {{ order.calculate_total_price }} </p>
+    <p> Итого: {{ total }} {{ currency }}</p>
     <form id="payment-form" data-client-secret="{{ client_secret }}">
         <div id="card-element">
         </div>
