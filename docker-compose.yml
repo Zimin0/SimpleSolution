@@ -3,12 +3,14 @@ version: '3'
 services:
   db:
     image: postgres:12
+    ports:
+      - 5432:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
+      POSTGRES_USER: simple
+      POSTGRES_PASSWORD: 3gGG*2n4
+      POSTGRES_DB: simple_db
 
   web:
     build: .
@@ -20,7 +22,7 @@ services:
     depends_on:
       - db
     environment:
-      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - DJANGO_SECRET_KEY=django-insecure-*99(uiv=_$sye=&xrdst^rny&$p8vcsg%@hb)dsl5qw^g-j4pn
 
   nginx:
     image: nginx:latest
