@@ -25,7 +25,9 @@ def pay_order(request, order_id):
 
     return render(request, 'payments/payment_form.html', {
         'client_secret': payment_intent.client_secret,
-        'order': order
+        'order': order,
+        'total': payment_intent.amount / 100,
+        'currency' : payment_intent.currency
     })
 
 def payment_success(request):
